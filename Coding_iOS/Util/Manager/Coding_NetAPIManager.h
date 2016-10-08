@@ -40,7 +40,7 @@
 #import "ShopOrderModel.h"
 #import "ProjectCount.h"
 
-@class CSTopic;
+@class CSTopic, Team;
 
 typedef NS_ENUM(NSUInteger, VerifyType){
     VerifyTypeUnknow = 0,
@@ -92,6 +92,13 @@ typedef NS_ENUM(NSInteger, PurposeType) {
 - (void)request_TransferProject:(Project *)project toUser:(User *)user passCode:(NSString *)passCode type:(VerifyType)type andBlock:(void (^)(Project *data, NSError *error))block;
 - (void)request_EditAliasOfMember:(ProjectMember *)curMember inProject:(Project *)curPro andBlock:(void (^)(id data, NSError *error))block;
 - (void)request_EditTypeOfMember:(ProjectMember *)curMember inProject:(Project *)curPro andBlock:(void (^)(id data, NSError *error))block;
+- (void)request_ProjectServiceInfo:(Project *)curPro andBlock:(void (^)(id data, NSError *error))block;
+
+#pragma mark Team
+- (void)request_JoinedTeamsBlock:(void (^)(id data, NSError *error))block;
+- (void)request_DetailOfTeam:(Team *)team andBlock:(void (^)(id data, NSError *error))block;
+- (void)request_ProjectsInTeam:(Team *)team isJoined:(BOOL)isJoined andBlock:(void (^)(id data, NSError *error))block;
+- (void)request_MembersInTeam:(Team *)team andBlock:(void (^)(id data, NSError *error))block;
 
 #pragma mark - MRPR
 - (void)request_MRPRS_WithObj:(MRPRS *)curMRPRS andBlock:(void (^)(MRPRS *data, NSError *error))block;
@@ -164,8 +171,12 @@ typedef NS_ENUM(NSInteger, PurposeType) {
 - (void)request_ModifyProjectTpoic:(ProjectTopic *)proTopic andBlock:(void (^)(id data, NSError *error))block;
 - (void)request_AddProjectTpoic:(ProjectTopic *)proTopic andBlock:(void (^)(id data, NSError *error))block;
 - (void)request_Comments_WithProjectTpoic:(ProjectTopic *)proTopic andBlock:(void (^)(id data, NSError *error))block;
-- (void)request_DoComment_WithProjectTpoic:(ProjectTopic *)proTopic andBlock:(void (^)(id data, NSError *error))block;
+- (void)request_Comments_WithAnswer:(ProjectTopic *)proTopic inProjectId:(NSNumber *)projectId andBlock:(void (^)(id data, NSError *error))block;
+- (void)request_UpvoteAnswer:(ProjectTopic *)proTopic inProjectId:(NSNumber *)projectId andBlock:(void (^)(id data, NSError *error))block;
+- (void)request_DoComment_WithProjectTpoic:(ProjectTopic *)proTopic andAnswerId:(NSNumber *)answerId andBlock:(void (^)(id data, NSError *error))block;
 - (void)request_ProjectTopic_Delete_WithObj:(ProjectTopic *)proTopic andBlock:(void (^)(id data, NSError *error))block;
+- (void)request_ProjectTopicComment_Delete_WithObj:(ProjectTopic *)proTopic projectId:(NSNumber *)projectId andBlock:(void (^)(id data, NSError *error))block;
+- (void)request_ChangeWatcher:(User *)watcher ofTopic:(ProjectTopic *)proTopic andBlock:(void (^)(id data, NSError *error))block;
 
 - (void)request_ModifyProjectTpoicLabel:(ProjectTopic *)proTopic
                                andBlock:(void (^)(id data, NSError *error))block;
@@ -185,6 +196,7 @@ typedef NS_ENUM(NSInteger, PurposeType) {
 - (void)request_Tweet_DoLike_WithObj:(Tweet *)tweet andBlock:(void (^)(id data, NSError *error))block;
 - (void)request_Tweet_DoComment_WithObj:(Tweet *)tweet andBlock:(void (^)(id data, NSError *error))block;
 - (void)request_Tweet_DoTweet_WithObj:(Tweet *)tweet andBlock:(void (^)(id data, NSError *error))block;
+- (void)request_Tweet_DoProjectTweet_WithPro:(NSNumber *)pro_id content:(NSString *)content andBlock:(void (^)(id data, NSError *error))block;
 - (void)request_Tweet_Likers_WithObj:(Tweet *)tweet andBlock:(void (^)(id data, NSError *error))block;
 - (void)request_Tweet_LikesAndRewards_WithObj:(Tweet *)tweet andBlock:(void (^)(id data, NSError *error))block;
 - (void)request_Tweet_Comments_WithObj:(Tweet *)tweet andBlock:(void (^)(id data, NSError *error))block;
@@ -204,6 +216,7 @@ typedef NS_ENUM(NSInteger, PurposeType) {
 - (void)request_GeneratePhoneCodeToResetPhone:(NSString *)phone phoneCountryCode:(NSString *)phoneCountryCode block:(void (^)(id data, NSError *error))block;
 - (void)request_PointRecords:(PointRecords *)records andBlock:(void (^)(id data, NSError *error))block;
 - (void)request_RewardToTweet:(NSString *)tweet_id encodedPassword:(NSString *)encodedPassword andBlock:(void (^)(id data, NSError *error))block;
+- (void)request_ServiceInfoBlock:(void (^)(id data, NSError *error))block;
 
 #pragma mark - Message
 - (void)request_PrivateMessages:(PrivateMessages *)priMsgs andBlock:(void (^)(id data, NSError *error))block;
@@ -254,7 +267,7 @@ typedef NS_ENUM(NSInteger, PurposeType) {
 #pragma mark - Topic
 - (void)request_TopicAdlistWithBlock:(void (^)(id data, NSError *error))block;
 - (void)request_HotTopiclistWithBlock:(void (^)(id data, NSError *error))block;
-
+- (void)request_DefautsHotTopicNamelistWithBlock:(void (^)(id data, NSError *error))block;
 - (void)request_Tweet_WithSearchString:(NSString *)strSearch andPage:(NSInteger)page andBlock:(void (^)(id data, NSError *error))block;
 
 - (void)requestWithSearchString:(NSString *)strSearch typeStr:(NSString*)type andPage:(NSInteger)page andBlock:(void (^)(id data, NSError *error))block;
@@ -268,6 +281,7 @@ typedef NS_ENUM(NSInteger, PurposeType) {
 - (void)request_Topic_DoWatch_WithUrl:(NSString *)url andBlock:(void (^)(id data, NSError *error))block;
 - (void)request_BannersWithBlock:(void (^)(id data, NSError *error))block;
 
+#pragma mark shop
 
 - (void)request_shop_userPointWithShop:(Shop *)_shop andBlock:(void (^)(id data, NSError *error))block;
 

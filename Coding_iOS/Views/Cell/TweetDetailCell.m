@@ -52,7 +52,6 @@
     if (self) {
         // Initialization code
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor clearColor];
         //        self.backgroundColor = [UIColor colorWithHexString:@"0xf3f3f3"];
         if (!self.ownerImgView) {
             self.ownerImgView = [[UITapImageView alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, 10, 38, 38)];
@@ -75,7 +74,7 @@
 //            self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width - kPaddingLeftWidth - 70, 18, 70, 12)];
             self.timeLabel.font = kTweet_TimtFont;
 //            self.timeLabel.textAlignment = NSTextAlignmentRight;
-            self.timeLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            self.timeLabel.textColor = kColor999;
             [self.contentView addSubview:self.timeLabel];
         }
 
@@ -102,7 +101,7 @@
             self.deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             self.deleteBtn.frame = CGRectMake(kScreen_Width - kPaddingLeftWidth- 2*kTweetDetailCell_LikeComment_Width- 5 , 0, kTweetDetailCell_LikeComment_Width, kTweetDetailCell_LikeComment_Height);
             [self.deleteBtn setTitle:@"删除" forState:UIControlStateNormal];
-            [self.deleteBtn setTitleColor:[UIColor colorWithHexString:@"0x3bbd79"] forState:UIControlStateNormal];
+            [self.deleteBtn setTitleColor:kColorBrandGreen forState:UIControlStateNormal];
             [self.deleteBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
             self.deleteBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12];
             [self.deleteBtn addTarget:self action:@selector(deleteBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -117,7 +116,7 @@
             self.locaitonBtn.frame = CGRectMake(kPaddingLeftWidth, 0,
                                                 (kScreen_Width - 2*kPaddingLeftWidth), 15);
             self.locaitonBtn.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-            [self.locaitonBtn setTitleColor:[UIColor colorWithHexString:@"0x3bbd79"] forState:UIControlStateNormal];
+            [self.locaitonBtn setTitleColor:kColorBrandGreen forState:UIControlStateNormal];
             [self.locaitonBtn addTarget:self action:@selector(locationBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.contentView addSubview:self.locaitonBtn];
         }
@@ -129,7 +128,7 @@
         if (!self.fromLabel) {
             self.fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.fromPhoneIconView.frame) + 5, 0, kScreen_Width/2, 15)];
             self.fromLabel.font = kTweet_TimtFont;
-            self.fromLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            self.fromLabel.textColor = kColor999;
             [self.contentView addSubview:self.fromLabel];
         }
         if (!self.likeUsersView) {
@@ -141,7 +140,7 @@
             [self.likeUsersView registerClass:[TweetLikeUserCCell class] forCellWithReuseIdentifier:kCCellIdentifier_TweetLikeUser];
             self.likeUsersView.dataSource = self;
             self.likeUsersView.delegate = self;
-//            [self.likeUsersView addLineUp:YES andDown:NO andColor:[UIColor colorWithHexString:@"0xdddddd"]];
+//            [self.likeUsersView addLineUp:YES andDown:NO andColor:kColorDDD];
             [self.contentView addSubview:self.likeUsersView];
         }
         if (!self.webContentView) {
@@ -175,9 +174,7 @@
         return;
     }
     
-    BOOL isProjectTweet = _tweet.project_id != nil;
-    self.likeBtn.hidden = isProjectTweet;
-    self.rewardBtn.hidden = isProjectTweet;
+    self.likeBtn.hidden = self.rewardBtn.hidden = [_tweet isProjectTweet];
     
     //owner头像
     __weak __typeof(self)weakSelf = self;

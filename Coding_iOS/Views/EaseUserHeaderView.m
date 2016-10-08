@@ -50,6 +50,19 @@
     [self updateData];
 }
 
+- (void)setNameBtnClicked:(void (^)())nameBtnClicked{
+    _nameBtnClicked = nameBtnClicked;
+    if (_nameBtnClicked) {
+        [_userSexIconView setImage:[UIImage imageNamed:@"user_info_edit"]];
+        _userSexIconView.userInteractionEnabled = _userLabel.userInteractionEnabled = YES;
+        [_userSexIconView bk_whenTapped:_nameBtnClicked];
+        [_userLabel bk_whenTapped:_nameBtnClicked];
+    }else{
+        [_userLabel bk_whenTapped:nil];
+        [_userSexIconView bk_whenTapped:nil];
+    }
+}
+
 - (void)configUI{
     if (!_curUser) {
         return;
@@ -227,18 +240,11 @@
     }
     self.image = _bgImage;
     [_userIconView sd_setImageWithURL:[_curUser.avatar urlImageWithCodePathResize:2* _userIconViewWith] placeholderImage:kPlaceholderMonkeyRoundWidth(54.0)];
-    if (_curUser.sex.intValue == 0) {
-        //        男
-        [_userSexIconView setImage:[UIImage imageNamed:@"n_sex_man_icon"]];
-        _userSexIconView.hidden = NO;
-    }else if (_curUser.sex.intValue == 1){
-        //        女
-        [_userSexIconView setImage:[UIImage imageNamed:@"n_sex_woman_icon"]];
-        _userSexIconView.hidden = NO;
-    }else{
-        //        未知
-        _userSexIconView.hidden = YES;
-    }
+    
+    [_userSexIconView setImage:[UIImage imageNamed:(_nameBtnClicked != nil? @"user_info_edit"://编辑
+                                                    _curUser.sex.intValue == 0? @"n_sex_man_icon"://男
+                                                    _curUser.sex.intValue == 1? @"n_sex_woman_icon"://女
+                                                    @"")]];//未知
     _userLabel.text = _curUser.name;
     [_userLabel sizeToFit];
     
@@ -256,5 +262,10 @@
         imageName = @"n_btn_followed_not";
     }
     [_followBtn setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+}
+- (CGFloat)originalHeight{
+    BOOL isMe = [_curUser.global_key isEqualToString:[Login curLoginUser].global_key];
+    CGFloat viewHeight = isMe? EaseUserHeaderView_Height_Me: EaseUserHeaderView_Height_Other;
+    return viewHeight;
 }
 @end

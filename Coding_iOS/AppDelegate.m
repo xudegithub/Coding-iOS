@@ -140,7 +140,7 @@
     [UMSocialConfig setFinishToastIsHidden:YES position:UMSocialiToastPositionCenter];
     [UMSocialConfig setNavigationBarConfig:^(UINavigationBar *bar, UIButton *closeButton, UIButton *backButton, UIButton *postButton, UIButton *refreshButton, UINavigationItem *navigationItem) {
         if (bar) {
-            [bar setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:[NSObject baseURLStrIsTest]? @"0x3bbd79" : @"0x28303b"]] forBarMetrics:UIBarMetricsDefault];
+            [bar setBackgroundImage:[UIImage imageWithColor:kColorNavBG] forBarMetrics:UIBarMetricsDefault];
         }
         if (navigationItem) {
             if ([[navigationItem titleView] isKindOfClass:[UILabel class]]) {
@@ -234,7 +234,6 @@
 
 - (void)setupIntroductionViewController{
     IntroductionViewController *introductionVC = [[IntroductionViewController alloc] init];
-//    [self.window setRootViewController:[[BaseNavigationController alloc] initWithRootViewController:introductionVC]];
     [self.window setRootViewController:introductionVC];
 }
 
@@ -247,18 +246,17 @@
 
 - (void)customizeInterface {
     //设置Nav的背景色和title色
-    
     UINavigationBar *navigationBarAppearance = [UINavigationBar appearance];
-    [navigationBarAppearance setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:[NSObject baseURLStrIsTest]? @"0x3bbd79" : @"0x28303b"]] forBarMetrics:UIBarMetricsDefault];
-    [navigationBarAppearance setTintColor:[UIColor whiteColor]];//返回按钮的箭头颜色
+    [navigationBarAppearance setBackgroundImage:[UIImage imageWithColor:[NSObject baseURLStrIsProduction]? kColorNavBG: kColorBrandGreen] forBarMetrics:UIBarMetricsDefault];
+    [navigationBarAppearance setTintColor:kColorBrandGreen];//返回按钮的箭头颜色
     NSDictionary *textAttributes = @{
-                                     NSFontAttributeName: [UIFont boldSystemFontOfSize:kNavTitleFontSize],
-                                     NSForegroundColorAttributeName: [UIColor whiteColor],
+                                     NSFontAttributeName: [UIFont systemFontOfSize:kNavTitleFontSize],
+                                     NSForegroundColorAttributeName: kColorNavTitle,
                                      };
     [navigationBarAppearance setTitleTextAttributes:textAttributes];
     
-    [[UITextField appearance] setTintColor:[UIColor colorWithHexString:@"0x3bbc79"]];//设置UITextField的光标颜色
-    [[UITextView appearance] setTintColor:[UIColor colorWithHexString:@"0x3bbc79"]];//设置UITextView的光标颜色
+    [[UITextField appearance] setTintColor:kColorBrandGreen];//设置UITextField的光标颜色
+    [[UITextView appearance] setTintColor:kColorBrandGreen];//设置UITextView的光标颜色
     [[UISearchBar appearance] setBackgroundImage:[UIImage imageWithColor:kColorTableSectionBg] forBarPosition:0 barMetrics:UIBarMetricsDefault];
 }
 

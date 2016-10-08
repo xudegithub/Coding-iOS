@@ -66,7 +66,7 @@ typedef NS_ENUM(NSInteger, XTSegmentControlItemType)
                     label.font = [UIFont systemFontOfSize:(kDevice_Is_iPhone6Plus) ? (XTSegmentControlItemFont + 1) : (kDevice_Is_iPhone6 ? XTSegmentControlItemFont : XTSegmentControlItemFont - 2)];
                     label.textAlignment = NSTextAlignmentCenter;
                     label.text = title;
-                    label.textColor = [UIColor colorWithHexString:@"0x222222"];
+                    label.textColor = kColor222;
                     label.backgroundColor = [UIColor clearColor];
                     [label sizeToFit];
                     if (label.frame.size.width > CGRectGetWidth(self.bounds) - XTSegmentControlIconSpace - 10) {
@@ -94,7 +94,7 @@ typedef NS_ENUM(NSInteger, XTSegmentControlItemType)
                     label.font = [UIFont systemFontOfSize:XTSegmentControlItemFont];
                     label.textAlignment = NSTextAlignmentCenter;
                     label.text = title;
-                    label.textColor = [UIColor colorWithHexString:@"0x222222"];
+                    label.textColor = kColor222;
                     label.backgroundColor = [UIColor clearColor];
                     label;
                 });
@@ -118,7 +118,7 @@ typedef NS_ENUM(NSInteger, XTSegmentControlItemType)
         case XTSegmentControlItemTypeTitleAndIcon:
         {
             if (_titleLabel) {
-                [_titleLabel setTextColor:(selected ? [UIColor colorWithHexString:@"0x3bbd79"]:[UIColor colorWithHexString:@"0x222222"])];
+                [_titleLabel setTextColor:(selected ? kColorBrandGreen:kColor222)];
             }
             if (_titleIconView) {
                 [_titleIconView setImage:[UIImage imageNamed: selected ? @"tag_list_down" : @"tag_list_up"]];
@@ -128,7 +128,7 @@ typedef NS_ENUM(NSInteger, XTSegmentControlItemType)
         default:
         {
             if (_titleLabel) {
-                [_titleLabel setTextColor:(selected ? [UIColor colorWithHexString:@"0x3bbd79"]:[UIColor colorWithHexString:@"0x222222"])];
+                [_titleLabel setTextColor:(selected ? kColorBrandGreen:kColor222)];
             }
         }
             break;
@@ -182,7 +182,7 @@ typedef NS_ENUM(NSInteger, XTSegmentControlItemType)
 - (id)initWithFrame:(CGRect)frame Items:(NSArray *)titleItem withIcon:(BOOL)isIcon
 {
     if (self = [super initWithFrame:frame]) {
-        [self initUIWith:isIcon Items:titleItem];
+        [self setupUI_IsIcon:isIcon Items:titleItem];
     }
     return self;
 }
@@ -190,16 +190,16 @@ typedef NS_ENUM(NSInteger, XTSegmentControlItemType)
 - (id)initWithFrame:(CGRect)frame Items:(NSArray *)titleItem
 {
     if (self = [super initWithFrame:frame]) {
-        [self initUIWith:NO Items:titleItem];
+        [self setupUI_IsIcon:NO Items:titleItem];
     }
     return self;
 }
 
-- (void)initUIWith:(BOOL)isIcon Items:(NSArray *)titleItem
+- (void)setupUI_IsIcon:(BOOL)isIcon Items:(NSArray *)titleItem
 {
     _contentView = ({
         UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-        scrollView.backgroundColor = [UIColor clearColor];
+        scrollView.backgroundColor = kColorTableBG;
         scrollView.delegate = self;
         scrollView.showsHorizontalScrollIndicator = NO;
         scrollView.scrollsToTop = NO;
@@ -343,7 +343,7 @@ typedef NS_ENUM(NSInteger, XTSegmentControlItemType)
                                                                          (CGRectGetHeight(rect) - 14) * 0.5,
                                                                          1,
                                                                          14)];
-            lineView.backgroundColor = [UIColor colorWithHexString:@"0xdddddd"];
+            lineView.backgroundColor = kColorDDD;
             [self addSubview:lineView];
         }
     }
@@ -358,11 +358,11 @@ typedef NS_ENUM(NSInteger, XTSegmentControlItemType)
                                                              CGRectGetHeight(rect) - XTSegmentControlLineHeight,
                                                              CGRectGetWidth(rect) - 2 * XTSegmentControlHspace,
                                                              XTSegmentControlLineHeight)];
-        _lineView.backgroundColor = [UIColor colorWithHexString:@"0x3bbd79"];
+        _lineView.backgroundColor = kColorBrandGreen;
         [_contentView addSubview:_lineView];
        
         UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(rect)-0.5, CGRectGetWidth(self.bounds), 0.5)];
-        bottomLineView.backgroundColor = [UIColor colorWithHexString:@"0xc8c7cc"];
+        bottomLineView.backgroundColor = kColorDDD;
         [self addSubview:bottomLineView];
     }
 }

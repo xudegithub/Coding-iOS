@@ -29,14 +29,13 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor clearColor];
         self.backgroundView = nil;
         if (!_commentLabel) {
             _commentLabel = [[UITTTAttributedLabel alloc] initWithFrame:CGRectMake(kTweetCommentCell_LeftOrRightPading, kScaleFrom_iPhone5_Desgin(6), kTweetCommentCell_ContentWidth, 20)];
             _commentLabel.numberOfLines = 0;
             _commentLabel.backgroundColor = [UIColor clearColor];
             _commentLabel.font = kTweet_CommentFont;
-            _commentLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _commentLabel.textColor = kColor222;
             _commentLabel.linkAttributes = kLinkAttributes;
             _commentLabel.activeLinkAttributes = kLinkAttributesActive;
             [self.contentView addSubview:_commentLabel];
@@ -46,14 +45,14 @@
             _userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(kTweetCommentCell_LeftOrRightPading, 0, 150, 15)];
             _userNameLabel.backgroundColor = [UIColor clearColor];
             _userNameLabel.font = [UIFont boldSystemFontOfSize:10];
-            _userNameLabel.textColor = [UIColor colorWithHexString:@"0x666666"];
+            _userNameLabel.textColor = kColor666;
             [self.contentView addSubview:_userNameLabel];
         }
         if (!_timeLabel) {
             _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 0, 80, 15)];
             _timeLabel.backgroundColor = [UIColor clearColor];
             _timeLabel.font = [UIFont systemFontOfSize:10];
-            _timeLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _timeLabel.textColor = kColor999;
             [self.contentView addSubview:_timeLabel];
         }
         if (!_timeClockIconView) {
@@ -86,7 +85,7 @@
     [_commentLabel setLongString:_curComment.content withFitWidth:kTweetCommentCell_ContentWidth maxHeight:kTweetCommentCell_ContentMaxHeight];
 
     for (HtmlMediaItem *item in _curComment.htmlMedia.mediaItems) {
-        if (item.displayStr.length > 0 && !(item.type == HtmlMediaItemType_Code ||item.type == HtmlMediaItemType_EmotionEmoji)) {
+        if (item.displayStr.length > 0 && item.href.length > 0) {
             [_commentLabel addLinkToTransitInformation:[NSDictionary dictionaryWithObject:item forKey:@"value"] withRange:item.range];
         }
     }

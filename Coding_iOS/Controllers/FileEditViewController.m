@@ -29,6 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.view.backgroundColor = kColorTableBG;
     [self requestFileContent];
 }
 
@@ -71,13 +72,13 @@
                 [segmentedControl setWidth:80 forSegmentAtIndex:0];
                 [segmentedControl setWidth:80 forSegmentAtIndex:1];
                 [segmentedControl setTitleTextAttributes:@{
-                                                           NSFontAttributeName: [UIFont boldSystemFontOfSize:16],
-                                                           NSForegroundColorAttributeName: [UIColor colorWithHexString:@"0x28303b"]
+                                                           NSFontAttributeName: [UIFont systemFontOfSize:16],
+                                                           NSForegroundColorAttributeName: [UIColor whiteColor]
                                                            }
                                                 forState:UIControlStateSelected];
                 [segmentedControl setTitleTextAttributes:@{
-                                                           NSFontAttributeName: [UIFont boldSystemFontOfSize:16],
-                                                           NSForegroundColorAttributeName: [UIColor whiteColor]
+                                                           NSFontAttributeName: [UIFont systemFontOfSize:16],
+                                                           NSForegroundColorAttributeName: kColorNavTitle
                                                            } forState:UIControlStateNormal];
                 [segmentedControl addTarget:self action:@selector(segmentedControlSelected:) forControlEvents:UIControlEventValueChanged];
                 segmentedControl;
@@ -140,7 +141,7 @@
             _editView = [[UITextView alloc] initWithFrame:self.view.bounds];
         }
         _editView.backgroundColor = [UIColor clearColor];
-        _editView.textColor = [UIColor colorWithHexString:@"0x666666"];
+        _editView.textColor = kColor666;
         _editView.font = [UIFont systemFontOfSize:16];
         _editView.textContainerInset = UIEdgeInsetsMake(15, kPaddingLeftWidth - 5, 8, kPaddingLeftWidth - 5);
         

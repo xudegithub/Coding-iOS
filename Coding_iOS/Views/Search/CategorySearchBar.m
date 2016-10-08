@@ -17,29 +17,18 @@
 
 @implementation CategorySearchBar
 
--(void)layoutSubviews
-{
+-(void)layoutSubviews{
     self.autoresizesSubviews = YES;
-    NSPredicate *finalPredicate = [NSPredicate predicateWithBlock:^BOOL(UIView *candidateView, NSDictionary *bindings) {
-        if ([candidateView isMemberOfClass:NSClassFromString(@"UISearchBarTextField")]) {
-            return true;
-        }else{
-            return false;
-        }
-    }];
-    
-    //找到输入框  右移
-    UITextField *searchField=[[[[[self subviews] firstObject] subviews] filteredArrayUsingPredicate:finalPredicate] lastObject];
-    searchField.textAlignment=NSTextAlignmentLeft;
-    [searchField setFrame:CGRectMake(53,4.8,self.frame.size.width-55,22)];
-    //
-    [(UIImageView*)searchField.leftView setFrame:CGRectZero];
+    UITextField *searchField = self.eaTextField;
+    [searchField setFrame:CGRectMake(60, 4.5, self.frame.size.width - 75, 22)];
+    searchField.leftView = nil;
+    searchField.textAlignment = NSTextAlignmentLeft;
 }
 
 -(void)patchWithCategoryWithSelectBlock:(SelectBlock)block{
     [self addSubview:self.categoryBtn];
     [self addSubview:self.iconBtn];
-    _curBlock=block;
+    _curBlock = block;
 }
 
 -(UIButton*)categoryBtn{
@@ -47,8 +36,8 @@
         _categoryBtn=[UIButton new];
         _categoryBtn.frame=CGRectMake(5, 0, 40, 31);
         [_categoryBtn addTarget:self action:@selector(selectCategoryAction) forControlEvents:UIControlEventTouchUpInside];
-        _categoryBtn.titleLabel.font=[UIFont systemFontOfSize:12];
-        [_categoryBtn setTitleColor:[UIColor colorWithHexString:@"0x666666"] forState:UIControlStateNormal];
+        _categoryBtn.titleLabel.font = self.eaTextField.font;
+        [_categoryBtn setTitleColor:kColor666 forState:UIControlStateNormal];
         [_categoryBtn setTitle:@"项目" forState:UIControlStateNormal];
     }
     return _categoryBtn;
@@ -62,9 +51,6 @@
     }
     return _iconBtn;
 }
-
-
-
 
 #pragma mark -- event
 -(void)selectCategoryAction{
@@ -90,20 +76,5 @@
         }];
     }
     return _scanBtn;
-}
-
--(void)layoutSubviews
-{
-    //fix width in ios7
-    self.width=kScreen_Width-115;
-    self.autoresizesSubviews = YES;
-    //找到输入框  右移
-    NSPredicate *finalPredicate = [NSPredicate predicateWithBlock:^BOOL(UIView *candidateView, NSDictionary *bindings) {
-        return [candidateView isMemberOfClass:NSClassFromString(@"UISearchBarTextField")];
-    }];
-    UITextField *searchField = [[[[[self subviews] firstObject] subviews] filteredArrayUsingPredicate:finalPredicate] lastObject];
-    searchField.textAlignment = NSTextAlignmentLeft;
-    [searchField setFrame:CGRectMake(-CGRectGetWidth(self.frame)/2 + 40, 4.8, CGRectGetWidth(self.frame), 22)];
-    [(UIImageView*)searchField.leftView setSize:CGSizeMake(13, 13)];
 }
 @end

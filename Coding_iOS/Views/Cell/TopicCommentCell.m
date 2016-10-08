@@ -14,9 +14,12 @@
 #import "TopicCommentCCell.h"
 
 #import "MJPhotoBrowser.h"
+#import "Coding_NetAPIManager.h"
 
 @interface TopicCommentCell ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 @property (strong, nonatomic) UIImageView *ownerIconView;
+@property (strong, nonatomic) UIView *bestAnswerV;
+@property (strong, nonatomic) UIButton *voteBtn, *voteBtnBig;
 @property (strong, nonatomic) UILabel *timeLabel;
 @property (strong, nonatomic) UICustomCollectionView *imageCollectionView;
 @end
@@ -28,17 +31,48 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor clearColor];
-        CGFloat curBottomY = 10;
+        if (!_bestAnswerV) {
+            _bestAnswerV = [[UIView alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, 0, 80, 24)];
+            _bestAnswerV.backgroundColor = [UIColor colorWithHexString:@"0x2FAEEA"];
+            UIImageView *imageV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_best_answer"]];
+            [_bestAnswerV addSubview:imageV];
+            UILabel *label = [UILabel labelWithSystemFontSize:11 textColorHexString:@"0xFFFFFF"];
+            label.textAlignment = NSTextAlignmentCenter;
+            label.text = @"最佳答案";
+            [_bestAnswerV addSubview:label];
+            [imageV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(_bestAnswerV);
+                make.left.equalTo(_bestAnswerV).offset(10);
+                make.size.mas_offset(CGSizeMake(11, 12));
+            }];
+            [label mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(_bestAnswerV);
+                make.left.equalTo(imageV.mas_right);
+                make.right.equalTo(_bestAnswerV);
+            }];
+            [self.contentView addSubview:_bestAnswerV];
+        }
+        CGFloat curBottomY = 15;
         if (!_ownerIconView) {
             _ownerIconView = [[UIImageView alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, curBottomY, 33, 33)];
             [_ownerIconView doCircleFrame];
             [self.contentView addSubview:_ownerIconView];
         }
+        if (!_voteBtn) {
+            _voteBtn = [[UIButton alloc] initWithFrame:CGRectMake(kPaddingLeftWidth + 1.5, _ownerIconView.bottom, 30, 18)];
+            [_voteBtn doBorderWidth:0.5 color:kColorCCC cornerRadius:2.0];
+            _voteBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+            [_voteBtn addTarget:self action:@selector(voteBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+            [self.contentView addSubview:_voteBtn];
+            
+            _voteBtnBig = [[UIButton alloc] initWithFrame:CGRectInset(_voteBtn.frame, -10, -5)];
+            [_voteBtnBig addTarget:self action:@selector(voteBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+            [self.contentView insertSubview:_voteBtnBig belowSubview:_voteBtn];
+        }
         CGFloat curWidth = kScreen_Width - 40 - 2*kPaddingLeftWidth;
         if (!_contentLabel) {
             _contentLabel = [[UITTTAttributedLabel alloc] initWithFrame:CGRectMake(kPaddingLeftWidth + 40, curBottomY, curWidth, 30)];
-            _contentLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _contentLabel.textColor = kColor222;
             _contentLabel.font = kTopicCommentCell_FontContent;
             _contentLabel.linkAttributes = kLinkAttributes;
             _contentLabel.activeLinkAttributes = kLinkAttributesActive;
@@ -48,7 +82,7 @@
         CGFloat commentBtnWidth = 40;
         if (!_timeLabel) {
             _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPaddingLeftWidth +40, 0, curWidth- commentBtnWidth, 20)];
-            _timeLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _timeLabel.textColor = kColor999;
             _timeLabel.font = [UIFont systemFontOfSize:12];
             [self.contentView addSubview:_timeLabel];
         }
@@ -69,24 +103,48 @@
     return self;
 }
 
+- (void)voteBtnClicked{
+    __weak typeof(self) weakSelf = self;
+    [[Coding_NetAPIManager sharedManager] request_UpvoteAnswer:_toComment inProjectId:_projectId andBlock:^(id data, NSError *error) {
+        if (data) {
+            [weakSelf setVoteCount:weakSelf.toComment.up_vote_counts isVoted:weakSelf.toComment.is_up_voted.boolValue];
+        }
+    }];
+}
+
+- (void)setVoteCount:(NSNumber *)voteCount isVoted:(BOOL)isVoted{
+    [_voteBtn setBackgroundColor:[UIColor colorWithHexString:isVoted? @"0x3BBD79": @"0xFFFFFF"]];
+    [_voteBtn setTitleColor:[UIColor colorWithHexString:isVoted? @"0xFFFFFF": @"0x666666"] forState:UIControlStateNormal];
+    [_voteBtn setTitle:[NSString stringWithFormat:@"+%@", voteCount] forState:UIControlStateNormal];
+}
+
 - (void)setToComment:(ProjectTopic *)toComment{
     _toComment = toComment;
     
     if (!_toComment) {
         return;
     }
-    CGFloat curBottomY = 10;
+    CGFloat curBottomY = 15;
     CGFloat curWidth = kScreen_Width - 40 - 2*kPaddingLeftWidth;
+    
+    _bestAnswerV.hidden = !_toComment.is_recommended.boolValue;
+    if (_toComment.is_recommended.boolValue) {
+        curBottomY = 35;
+    }
+    
+    _ownerIconView.y = _contentLabel.y = curBottomY;
+    _voteBtn.y = _ownerIconView.bottom + 5;
+    _voteBtnBig.y = _voteBtn.y - 5;
+    [self setVoteCount:_toComment.up_vote_counts isVoted:_toComment.is_up_voted.boolValue];
     [_ownerIconView sd_setImageWithURL:[_toComment.owner.avatar urlImageWithCodePathResizeToView:_ownerIconView] placeholderImage:kPlaceholderMonkeyRoundView(_ownerIconView)];
     [_contentLabel setLongString:_toComment.content withFitWidth:curWidth];
-    
     for (HtmlMediaItem *item in _toComment.htmlMedia.mediaItems) {
-        if (item.displayStr.length > 0 && !(item.type == HtmlMediaItemType_Code ||item.type == HtmlMediaItemType_EmotionEmoji)) {
+        if (item.displayStr.length > 0 && item.href.length > 0) {
             [_contentLabel addLinkToTransitInformation:[NSDictionary dictionaryWithObject:item forKey:@"value"] withRange:item.range];
         }
     }
     
-    curBottomY += [_toComment.content getHeightWithFont:kTopicCommentCell_FontContent constrainedToSize:CGSizeMake(curWidth, CGFLOAT_MAX)] + 5;
+    curBottomY += [_toComment.content getHeightWithFont:kTopicCommentCell_FontContent constrainedToSize:CGSizeMake(curWidth, CGFLOAT_MAX)] + 10;
     
     NSInteger imagesCount = _toComment.htmlMedia.imageItems.count;
     if (imagesCount > 0) {
@@ -103,13 +161,20 @@
     _timeLabel.text = [NSString stringWithFormat:@"%@ 发布于 %@", _toComment.owner.name, [_toComment.created_at stringDisplay_HHmm]];
 }
 
+- (void)setIsAnswer:(BOOL)isAnswer{
+    _isAnswer = isAnswer;
+    _ownerIconView.hidden = _voteBtn.hidden = _voteBtnBig.hidden = !_isAnswer;
+    _contentLabel.textColor = [UIColor colorWithHexString:_isAnswer? @"0x222222": @"0x666666"];
+}
+
 + (CGFloat)cellHeightWithObj:(id)obj{
     CGFloat cellHeight = 0;
     if ([obj isKindOfClass:[ProjectTopic class]]) {
         ProjectTopic *toComment = (ProjectTopic *)obj;
         CGFloat curWidth = kScreen_Width - 40 - 2*kPaddingLeftWidth;
-        cellHeight += 10 +[toComment.content getHeightWithFont:kTopicCommentCell_FontContent constrainedToSize:CGSizeMake(curWidth, CGFLOAT_MAX)] + 5 +20 +10;
+        cellHeight += 15 +[toComment.content getHeightWithFont:kTopicCommentCell_FontContent constrainedToSize:CGSizeMake(curWidth, CGFLOAT_MAX)] + 10 +20 +15;
         cellHeight += [self imageCollectionViewHeightWithCount:toComment.htmlMedia.imageItems.count];
+        cellHeight += toComment.is_recommended.boolValue? 20: 0;
     }
     return cellHeight;
 }

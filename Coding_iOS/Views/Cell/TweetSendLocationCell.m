@@ -20,7 +20,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor clearColor];
         if (!_iconImageView) {
             _iconImageView = [UIImageView new];
             [self.contentView addSubview:_iconImageView];
@@ -54,7 +53,7 @@
     if (locationStr.length > 0) {
         [self.iconImageView setImage:[UIImage imageNamed:@"icon_locationed"]];
         self.locationL.text = locationStr;
-        self.locationL.textColor = [UIColor colorWithHexString:@"0x3bbd79"];
+        self.locationL.textColor = kColorBrandGreen;
     }else{
         [self.iconImageView setImage:[UIImage imageNamed:@"icon_not_locationed"]];
         self.locationL.text = @"所在位置";
@@ -78,7 +77,6 @@
     if (self) {
         // Initialization code
         self.selectionStyle = UITableViewCellSelectionStyleDefault;
-        self.backgroundColor = [UIColor clearColor];
         
         CGRect frame = CGRectZero;
         frame.size.width = kScreen_Width;
@@ -90,7 +88,7 @@
         if (!_descriptionLabel) {
             _descriptionLabel = [[UILabel alloc]initWithFrame:frame];
             _descriptionLabel.font = font;
-            _descriptionLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _descriptionLabel.textColor = kColor999;
             _descriptionLabel.text = @"没有找到你的位置？";
             _descriptionLabel.textAlignment = NSTextAlignmentLeft;
             
@@ -100,7 +98,7 @@
             frame.origin.y = 25;
             _locationLabel = [[UILabel alloc]initWithFrame:frame];
             _locationLabel.font = font;
-            _locationLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _locationLabel.textColor = kColor999;
             _locationLabel.text = @"创建新的位置";
             _locationLabel.textAlignment = NSTextAlignmentLeft;
 
@@ -112,15 +110,11 @@
         lineFrame.size.height = 0.5;
         lineFrame.origin.y = 50 - 0.5;
         UIView *bottomLine = [[UIView alloc]initWithFrame:lineFrame];
-        bottomLine.backgroundColor = [UIColor colorWithHexString:@"0xdddddd"];
+        bottomLine.backgroundColor = kColorDDD;
         
         [self addSubview:bottomLine];
     }
     return self;
-}
-- (void)awakeFromNib
-{
-    // Initialization code
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

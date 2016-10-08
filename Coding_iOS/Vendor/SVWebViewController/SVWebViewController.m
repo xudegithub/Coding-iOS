@@ -194,7 +194,7 @@
         UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, toolbarWidth, 44.0f)];
         toolbar.items = items;
         toolbar.barStyle = self.navigationController.navigationBar.barStyle;
-        toolbar.tintColor = [UIColor colorWithHexString:@"0x3bbd79"];
+        toolbar.tintColor = kColorBrandGreen;
         self.navigationItem.rightBarButtonItems = items.reverseObjectEnumerator.allObjects;
     }
     
@@ -212,7 +212,7 @@
                           nil];
         
         self.navigationController.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
-        self.navigationController.toolbar.tintColor = [UIColor colorWithHexString:@"0x3bbd79"];
+        self.navigationController.toolbar.tintColor = kColorBrandGreen;
         self.toolbarItems = items;
     }
 }
@@ -232,7 +232,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     
-    self.navigationItem.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    self.title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     
     [self updateToolbarItems];
     

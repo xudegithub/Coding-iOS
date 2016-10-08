@@ -23,7 +23,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor clearColor];
         if (!_memberIconView) {
             _memberIconView = [[UIImageView alloc] initWithFrame:CGRectMake(10, ([MemberCell cellHeight]-40)/2, 40, 40)];
             [_memberIconView doCircleFrame];
@@ -32,7 +31,7 @@
         if (!_memberNameLabel) {
             _memberNameLabel = [UILabel new];
             _memberNameLabel.font = [UIFont systemFontOfSize:17];
-            _memberNameLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _memberNameLabel.textColor = kColor222;
             [self.contentView addSubview:_memberNameLabel];
             [_memberNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.memberIconView.mas_right).offset(10);
@@ -43,7 +42,7 @@
         if (!_memberAliasLabel) {
             _memberAliasLabel = [UILabel new];
             _memberAliasLabel.font = [UIFont systemFontOfSize:12];
-            _memberAliasLabel.textColor = [UIColor colorWithHexString:@"0x666666"];
+            _memberAliasLabel.textColor = kColor666;
             [self.contentView addSubview:_memberAliasLabel];
             [_memberAliasLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(self.memberNameLabel);
@@ -65,8 +64,9 @@
     return self;
 }
 
-- (void)layoutSubviews{
-    [super layoutSubviews];
+- (void)setCurMember:(ProjectMember *)curMember{
+    _curMember = curMember;
+    
     if (!_curMember) {
         return;
     }
@@ -109,14 +109,15 @@
         }
             break;
     }
-
-    if (_type == ProMemTypeTaskWatchers) {//「添加、已添加」按钮
+    
+    if (_type == ProMemTypeTaskWatchers || _type == ProMemTypeTopicWatchers) {//「添加、已添加」按钮
         _leftBtn.hidden = NO;
     }else if (_type == ProMemTypeProject){
         if (_curMember.user_id.intValue != [Login curLoginUser].id.integerValue) {//「私信」按钮
             //        别人
             [_leftBtn configPriMsgBtnWithUser:_curMember.user fromCell:YES];
-            _leftBtn.hidden = NO;
+//            _leftBtn.hidden = NO;
+            _leftBtn.hidden = YES;//说是不要私信按钮了
         }else{
             //        自己
             if (_curMember.type.intValue == 100) {//项目创建者不能「退出」
@@ -139,7 +140,7 @@
 }
 
 + (CGFloat)cellHeight{
-    return 57;
+    return 60;
 }
 
 - (void)prepareForReuse{

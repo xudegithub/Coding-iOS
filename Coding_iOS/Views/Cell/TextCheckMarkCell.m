@@ -18,13 +18,13 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.tintColor = [UIColor colorWithHexString:@"0x3bbd79"];
+        self.tintColor = kColorBrandGreen;
         self.backgroundColor = kColorTableBG;
 
         if (!_contentL) {
             _contentL = [UILabel new];
             _contentL.font = [UIFont systemFontOfSize:15];
-            _contentL.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _contentL.textColor = kColor222;
             [self.contentView addSubview:_contentL];
             [_contentL mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(10, kPaddingLeftWidth, 10, kPaddingLeftWidth));

@@ -40,7 +40,7 @@ static char LoadingViewKey, BlankPageViewKey;
     self.layer.masksToBounds = YES;
     self.layer.cornerRadius = self.frame.size.width/2;
     self.layer.borderWidth = 0.5;
-    self.layer.borderColor = [UIColor colorWithHexString:@"0xdddddd"].CGColor;
+    self.layer.borderColor = kColorDDD.CGColor;
 }
 - (void)doNotCircleFrame{
     self.layer.cornerRadius = 0.0;
@@ -52,7 +52,7 @@ static char LoadingViewKey, BlankPageViewKey;
     self.layer.cornerRadius = cornerRadius;
     self.layer.borderWidth = width;
     if (!color) {
-        self.layer.borderColor = [UIColor colorWithHexString:@"0xdddddd"].CGColor;
+        self.layer.borderColor = kColorDDD.CGColor;
     }else{
         self.layer.borderColor = color.CGColor;
     }
@@ -258,7 +258,7 @@ static char LoadingViewKey, BlankPageViewKey;
 }
 
 + (UIView *)lineViewWithPointYY:(CGFloat)pointY{
-    return [self lineViewWithPointYY:pointY andColor:[UIColor colorWithHexString:@"0xc8c7cc"]];
+    return [self lineViewWithPointYY:pointY andColor:kColorDDD];
 }
 
 + (UIView *)lineViewWithPointYY:(CGFloat)pointY andColor:(UIColor *)color{
@@ -292,7 +292,7 @@ static char LoadingViewKey, BlankPageViewKey;
 }
 
 - (void)addLineUp:(BOOL)hasUp andDown:(BOOL)hasDown{
-    [self addLineUp:hasUp andDown:hasDown andColor:[UIColor colorWithHexString:@"0xc8c7cc"]];
+    [self addLineUp:hasUp andDown:hasDown andColor:kColorDDD];
 }
 
 - (void)addLineUp:(BOOL)hasUp andDown:(BOOL)hasDown andColor:(UIColor *)color{
@@ -401,7 +401,7 @@ static char LoadingViewKey, BlankPageViewKey;
             self.blankPageView = [[EaseBlankPageView alloc] initWithFrame:self.bounds];
         }
         self.blankPageView.hidden = NO;
-        [self.blankPageContainer addSubview:self.blankPageView];
+        [self.blankPageContainer insertSubview:self.blankPageView atIndex:0];
 
 //        [self.blankPageContainer insertSubview:self.blankPageView atIndex:0];
 //        [self.blankPageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -607,10 +607,10 @@ static char LoadingViewKey, BlankPageViewKey;
                 tipStr = @"来，冒个泡吧～";
             }
                 break;
-            case EaseBlankPageTypeTweetOther://冒泡列表（别人的）
+            case EaseBlankPageTypeTweetOther://冒泡列表（别人的、项目内的）
             {
                 imageName = @"blankpage_image_Sleep";
-                tipStr = @"这个人很懒\n一个冒泡都木有～";
+                tipStr = @"这里很空\n一个冒泡都木有～";
             }
                 break;
             case EaseBlankPageTypeProject://项目列表（自己的）
@@ -746,7 +746,7 @@ static char LoadingViewKey, BlankPageViewKey;
             //新增按钮
             UIButton *actionBtn=({
                 UIButton *button=[UIButton new];
-                button.backgroundColor=[UIColor colorWithHexString:@"0x3BBD79"];
+                button.backgroundColor=kColorBrandGreen;
                 button.titleLabel.font=[UIFont systemFontOfSize:15];
                 [button addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
                 button.layer.cornerRadius=18;

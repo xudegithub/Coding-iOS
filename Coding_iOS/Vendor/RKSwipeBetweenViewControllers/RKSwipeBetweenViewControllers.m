@@ -21,7 +21,7 @@ CGFloat HEIGHT = 35.0; //%%% height of the segment
 CGFloat BOUNCE_BUFFER = 0.0; //%%% adds bounce to the selection bar when you scroll
 CGFloat ANIMATION_SPEED = 0.2; //%%% the number of seconds it takes to complete the animation
 CGFloat SELECTOR_Y_BUFFER = 32.0; //%%% the y-value of the bar that shows what page you are on (0 is the top)
-CGFloat SELECTOR_HEIGHT = 7.0; //%%% thickness of the selector bar
+CGFloat SELECTOR_HEIGHT = 5.0; //%%% thickness of the selector bar
 
 CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy offset.  I'm going to look for a better workaround in the future
 
@@ -79,8 +79,7 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
 
 //%%% color of the status bar
 -(UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
-    //    return UIStatusBarStyleDefault;
+        return UIStatusBarStyleDefault;
 }
 
 //%%% sets up the tabs using a loop.  You can take apart the loop to customize individual buttons, but remember to tag the buttons.  (button.tag=0 and the second button.tag=1, etc)
@@ -104,8 +103,8 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
         [_buttonContainer addSubview:button];
         button.tag = i; //%%% IMPORTANT: if you make your own custom buttons, you have to tag them appropriately
         [button addTarget:self action:@selector(tapSegmentButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize:kNavTitleFontSize];
-        button.titleLabel.textColor = [UIColor whiteColor];
+        button.titleLabel.font = [UIFont systemFontOfSize:kNavTitleFontSize];
+        [button setTitleColor:kColorNavTitle forState:UIControlStateNormal];
         [button setTitle:[buttonText objectAtIndex:i] forState:UIControlStateNormal]; //%%%buttontitle
     }
     [navigationView addSubview:_buttonContainer];
@@ -130,6 +129,8 @@ CGFloat X_OFFSET = 8.0; //%%% for some reason there's a little bit of a glitchy 
 #pragma mark Setup
 
 -(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     if (!pageController) {
         [self setupPageViewController];
         [self setupSegmentButtons];

@@ -45,7 +45,7 @@
         [tableView registerClass:[CSTopicNameCell class] forCellReuseIdentifier:kCellIdentifier_TopicNameCell];
         tableView.sectionIndexBackgroundColor = [UIColor clearColor];
         tableView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
-        tableView.sectionIndexColor = [UIColor colorWithHexString:@"0x666666"];
+        tableView.sectionIndexColor = kColor666;
         tableView.sectionHeaderHeight = 20;
         tableView.rowHeight = 44;
         [self.view addSubview:tableView];
@@ -64,7 +64,7 @@
         [searchBar setPlaceholder:@"#新话题"];
         searchBar.showsCancelButton = YES;
         [searchBar setTintColor:[UIColor whiteColor]];
-        [searchBar insertBGColor:[UIColor colorWithHexString:@"0x28303b"]];
+        [searchBar insertBGColor:kColorNavBG];
         
         searchBar.searchBarStyle = UISearchBarStyleDefault;
         searchBar.translucent = YES;
@@ -96,17 +96,8 @@
 
 - (void)refreshHotTopiclist{
     __weak typeof(self) wself = self;
-    [[Coding_NetAPIManager sharedManager] request_HotTopiclistWithBlock:^(NSArray *topiclist, NSError *error) {
-        if (topiclist) {
-            NSMutableArray *namelist = [NSMutableArray array];
-            for (int i=0; i<topiclist.count && i < 10; i++) {
-                NSDictionary *topicDict = topiclist[i];
-                [namelist addObject:topicDict[@"name"]];
-            }
-            wself.hotTopiclist = [namelist copy];
-        }else {
-            wself.hotTopiclist = [NSArray array];
-        }
+    [[Coding_NetAPIManager sharedManager] request_DefautsHotTopicNamelistWithBlock:^(NSArray *nameList, NSError *error) {
+        wself.hotTopiclist = nameList.count > 10? [nameList subarrayWithRange:NSMakeRange(0, 10)]: nameList;
         [wself.listView reloadData];
     }];
 }
@@ -160,7 +151,7 @@
     
     UILabel *titleL = [[UILabel alloc] init];
     titleL.font = [UIFont systemFontOfSize:12];
-    titleL.textColor = [UIColor colorWithHexString:@"0x999999"];
+    titleL.textColor = kColor999;
     titleL.text = [self tableView:tableView titleForHeaderInSection:section];
     [headerV addSubview:titleL];
     [titleL mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -333,12 +324,10 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor clearColor];
-        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;        
         self.textLabel.frame = CGRectMake(kPaddingLeftWidth, 0, kScreen_Width - kPaddingLeftWidth - 15, 44);
         self.textLabel.font = [UIFont systemFontOfSize:15];
-        self.textLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+        self.textLabel.textColor = kColor222;
         self.textLabel.backgroundColor = [UIColor clearColor];
     }
     return self;

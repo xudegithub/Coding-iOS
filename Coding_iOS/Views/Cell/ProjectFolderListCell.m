@@ -22,7 +22,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        self.backgroundColor = [UIColor clearColor];
         // Initialization code
         if (!_iconView) {
             _iconView = [[UIImageView alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, ([ProjectFolderListCell cellHeight] - kProjectFolderListCell_IconWidth)/2, kProjectFolderListCell_IconWidth, kProjectFolderListCell_IconWidth)];
@@ -30,7 +29,7 @@
         }
         if (!_nameLabel) {
             _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(kProjectFolderListCell_LeftPading, ([ProjectFolderListCell cellHeight] - 30)/2, (kScreen_Width - kProjectFolderListCell_LeftPading - 30), 30)];
-            _nameLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _nameLabel.textColor = kColor222;
             _nameLabel.font = [UIFont systemFontOfSize:16];
             [self.contentView addSubview:_nameLabel];
         }

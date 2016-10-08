@@ -17,7 +17,10 @@
     self = [super init];
     if (self) {
         _propertyArrayMap = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"ProjectTag", @"labels", nil];
+                             @"ProjectTag", @"labels",
+                             @"ProjectTopic", @"child_comments",
+                             @"User", @"up_vote_users",
+                             nil];
         
         _page = [NSNumber numberWithInteger:1];
         _pageSize = [NSNumber numberWithInteger:20];
@@ -34,6 +37,19 @@
         _mdLabels = [[NSMutableArray alloc] initWithCapacity:3];
     }
     return self;
+}
+
+- (NSNumber *)is_up_voted{
+    if (!_is_up_voted) {
+        _is_up_voted = @(NO);
+        for (User *user in _up_vote_users) {
+            if ([user.global_key isEqualToString:[Login curLoginUser].global_key]) {
+                _is_up_voted = @(YES);
+                break;
+            }
+        }
+    }
+    return _is_up_voted;
 }
 
 - (void)setContent:(NSString *)content{
@@ -63,6 +79,15 @@
     ProjectTopic *topic = [[ProjectTopic alloc] init];
     topic.id = topicId;
     return topic;
+}
+
+- (User *)hasWatcher:(User *)watcher{
+    for (User *user in self.watchers) {
+        if ([user.id isEqual:watcher.id]) {
+            return user;
+        }
+    }
+    return nil;
 }
 
 - (NSString *)toTopicPath
@@ -136,25 +161,32 @@
 
 - (NSString *)toDoCommentPath
 {
-    return [NSString stringWithFormat:@"api/project/%d/topic?parent=%d", _project_id.intValue, _id.intValue];
+    return [NSString stringWithFormat:@"api/project/%@/topic/%@/comment", _project_id, _id];
 }
-- (NSDictionary *)toDoCommentParams
+
+- (void)configWithComment:(ProjectTopic *)comment andAnswer:(ProjectTopic *)answer
 {
-    return @{@"content" : [_nextCommentStr aliasedString]};
-}
-- (void)configWithComment:(ProjectTopic *)comment
-{
-    if (self.canLoadMore) {
-        return;
-    }
-    
-    if (self.comments && self.comments.list) {
-        [self.comments.list addObject:comment];
+    if (answer) {
+        if (answer.child_comments) {
+            [answer.child_comments insertObject:comment atIndex:0];
+            answer.child_count = @(answer.child_count.integerValue + 1);
+        }else{
+            answer.child_comments = @[comment].mutableCopy;
+            answer.child_count = @1;
+        }
     }else{
-        self.comments = [[ProjectTopics alloc] init];
-        self.comments.list = [NSMutableArray arrayWithObject:comment];
+        if (self.canLoadMore) {
+            return;
+        }
+        
+        if (self.comments && self.comments.list) {
+            [self.comments.list addObject:comment];
+        }else{
+            self.comments = [[ProjectTopics alloc] init];
+            self.comments.list = [NSMutableArray arrayWithObject:comment];
+        }
+        self.child_count = [NSNumber numberWithInteger:_child_count.intValue +1];
     }
-    self.child_count = [NSNumber numberWithInteger:_child_count.intValue +1];
 }
 - (NSString *)toDeletePath
 {
@@ -166,5 +198,29 @@
     return ([Login isLoginUserGlobalKey:self.owner.global_key] || // 讨论创建者
             [Login isLoginUserGlobalKey:self.project.owner_user_name]);// 项目创建者
 }
-
+- (NSInteger)commentsDisplayNum{
+    return MIN(_child_comments.count, 2);
+}
+- (void)change_is_up_voted{
+    _is_up_voted = @(!self.is_up_voted.boolValue);
+    if (_is_up_voted.boolValue) {//原来没有，现在需要添加
+        if (!_up_vote_users) {
+            _up_vote_users = @[].mutableCopy;
+        }
+        [_up_vote_users addObject:[Login curLoginUser]];
+        _up_vote_counts = @(_up_vote_counts.integerValue + 1);
+    }else{//原来有，现在需要移除
+        User *meUser = nil;
+        for (User *user in _up_vote_users) {
+            if ([user.global_key isEqualToString:[Login curLoginUser].global_key]) {
+                meUser = user;
+                break;
+            }
+        }
+        if (meUser) {
+            [_up_vote_users removeObject:meUser];
+            _up_vote_counts = @(_up_vote_counts.integerValue - 1);
+        }
+    }
+}
 @end

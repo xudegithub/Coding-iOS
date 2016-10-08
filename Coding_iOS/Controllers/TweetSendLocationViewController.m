@@ -477,7 +477,7 @@
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    [searchBar insertBGColor:[UIColor colorWithHexString:@"0x28303b"]];
+    [searchBar insertBGColor:kColorNavBG];
     [self.mySearchDisplayController setActive:YES animated:YES];
     return YES;
 }
@@ -543,7 +543,7 @@
         label.backgroundColor = [UIColor clearColor];
         label.text = str;
         label.font = font;
-        label.textColor = [UIColor colorWithHexString:@"0x222222"];
+        label.textColor = kColor222;
         label.numberOfLines = 1;
         label.textAlignment = NSTextAlignmentCenter;
         label.center = _searchDisplayLoadingFooterView.center;
@@ -563,11 +563,11 @@
         lineFrame.size.height = 0.5;
         
         UIView *topLine = [[UIView alloc]initWithFrame:lineFrame];
-        topLine.backgroundColor = [UIColor colorWithHexString:@"0xdddddd"];
+        topLine.backgroundColor = kColorDDD;
         
         lineFrame.origin.y = CGRectGetMaxY(_searchDisplayLoadingFooterView.bounds) - 0.5;
         UIView *bottomLine = [[UIView alloc]initWithFrame:lineFrame];
-        bottomLine.backgroundColor = [UIColor colorWithHexString:@"0xdddddd"];
+        bottomLine.backgroundColor = kColorDDD;
         
         [_searchDisplayLoadingFooterView addSubview:topLine];
         [_searchDisplayLoadingFooterView addSubview:bottomLine];
@@ -586,7 +586,7 @@
         [btn setFrame:_searchDisplayFooterView.bounds];
         [btn setTitle:str forState:UIControlStateNormal];
         btn.titleLabel.font = [UIFont systemFontOfSize:14.0];
-        [btn setTitleColor:[UIColor colorWithHexString:@"0x222222"] forState:UIControlStateNormal];
+        [btn setTitleColor:kColor222 forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(locationFooterClick:) forControlEvents:UIControlEventTouchUpInside];
         [_searchDisplayFooterView addSubview:btn];
         
@@ -594,11 +594,11 @@
         lineFrame.size.height = 0.5;
         
         UIView *topLine = [[UIView alloc]initWithFrame:lineFrame];
-        topLine.backgroundColor = [UIColor colorWithHexString:@"0xdddddd"];
+        topLine.backgroundColor = kColorDDD;
         
         lineFrame.origin.y = CGRectGetMaxY(_searchDisplayFooterView.bounds) - 0.5;
         UIView *bottomLine = [[UIView alloc]initWithFrame:lineFrame];
-        bottomLine.backgroundColor = [UIColor colorWithHexString:@"0xdddddd"];
+        bottomLine.backgroundColor = kColorDDD;
         
         [_searchDisplayFooterView addSubview:topLine];
         [_searchDisplayFooterView addSubview:bottomLine];
@@ -618,7 +618,7 @@
         [btn setFrame:_locationFooterView.bounds];
         [btn setTitle:str forState:UIControlStateNormal];
         btn.titleLabel.font = [UIFont systemFontOfSize:14.0];
-        [btn setTitleColor:[UIColor colorWithHexString:@"0x222222"] forState:UIControlStateNormal];
+        [btn setTitleColor:kColor222 forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(locationFooterClick:) forControlEvents:UIControlEventTouchUpInside];
         [_locationFooterView addSubview:btn];
         
@@ -626,11 +626,11 @@
         lineFrame.size.height = 0.5;
         
         UIView *topLine = [[UIView alloc]initWithFrame:lineFrame];
-        topLine.backgroundColor = [UIColor colorWithHexString:@"0xdddddd"];
+        topLine.backgroundColor = kColorDDD;
         
         lineFrame.origin.y = CGRectGetMaxY(_locationFooterView.bounds) - 0.5;
         UIView *bottomLine = [[UIView alloc]initWithFrame:lineFrame];
-        bottomLine.backgroundColor = [UIColor colorWithHexString:@"0xdddddd"];
+        bottomLine.backgroundColor = kColorDDD;
         
         [_locationFooterView addSubview:topLine];
         [_locationFooterView addSubview:bottomLine];
@@ -657,7 +657,7 @@
         label.backgroundColor = [UIColor clearColor];
         label.text = str;
         label.font = font;
-        label.textColor = [UIColor colorWithHexString:@"0x222222"];
+        label.textColor = kColor222;
         label.numberOfLines = 1;
         label.textAlignment = NSTextAlignmentCenter;
         label.center = _searchingFooterView.center;
@@ -677,11 +677,11 @@
         lineFrame.size.height = 0.5;
         
         UIView *topLine = [[UIView alloc]initWithFrame:lineFrame];
-        topLine.backgroundColor = [UIColor colorWithHexString:@"0xdddddd"];
+        topLine.backgroundColor = kColorDDD;
         
         lineFrame.origin.y = CGRectGetMaxY(_searchingFooterView.bounds) - 0.5;
         UIView *bottomLine = [[UIView alloc]initWithFrame:lineFrame];
-        bottomLine.backgroundColor = [UIColor colorWithHexString:@"0xdddddd"];
+        bottomLine.backgroundColor = kColorDDD;
         
         [_searchingFooterView addSubview:topLine];
         [_searchingFooterView addSubview:bottomLine];
@@ -718,21 +718,21 @@
         if([self.locationArray[indexPath.row][@"cellType"] isEqualToString:@"defualt"] && cell == nil) {
             cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             cell.textLabel.font = [UIFont systemFontOfSize:15.0];
-            cell.textLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            cell.textLabel.textColor = kColor222;
         }else if (cell == nil) {
             cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
             cell.textLabel.font = [UIFont systemFontOfSize:15.0];
             cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
-            cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            cell.detailTextLabel.textColor = kColor999;
         }
-        cell.tintColor = [UIColor colorWithHexString:@"0x3bbd79"];
+        cell.tintColor = kColorBrandGreen;
         //如果为自定义数据
         if([self.locationArray[indexPath.row][@"cellType"] isEqualToString:@"defualt"])
         {
             switch (indexPath.row) {
                 case 0:
                     cell.textLabel.text = self.locationArray[indexPath.row][@"title"];
-                    cell.textLabel.textColor = [UIColor colorWithHexString:@"0x3bbd79"];
+                    cell.textLabel.textColor = kColorBrandGreen;
                     if ([self.locationArray[indexPath.row][@"checkmark"] isEqualToString:@"YES"]) {
                         cell.accessoryType = UITableViewCellAccessoryCheckmark;
                     }else {
@@ -810,7 +810,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:SearchDefaultCellIdentifier];
         cell.textLabel.font = [UIFont systemFontOfSize:15.0];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:12.0];
-        cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+        cell.detailTextLabel.textColor = kColor999;
     }
     
     //判断是否为自定义数据

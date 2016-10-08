@@ -16,11 +16,12 @@
 
 @interface ProjectTopic : NSObject
 
-@property (readwrite, nonatomic, strong) NSNumber *id, *child_count, *current_user_role_id, *owner_id, *project_id, *parent_id, *number,*resource_id;
+@property (readwrite, nonatomic, strong) NSNumber *id, *child_count, *current_user_role_id, *owner_id, *project_id, *parent_id, *number,*resource_id, *topic_id, *is_recommended, *up_vote_counts, *is_up_voted;
 @property (readwrite, nonatomic, strong) NSDate *created_at;
 @property (readwrite, nonatomic, strong) NSDate *updated_at;
 @property (readwrite, nonatomic, strong) NSString *title, *content, *path,*contentStr;
 @property (readwrite, strong, nonatomic) NSMutableArray *labels;
+@property (readwrite, strong, nonatomic) NSMutableArray *child_comments, *up_vote_users;
 @property (readwrite, nonatomic, strong) NSDictionary *propertyArrayMap;
 
 @property (readwrite, nonatomic, strong) User *owner;
@@ -33,6 +34,7 @@
 
 @property (strong, nonatomic) NSString *mdTitle, *mdContent;
 @property (strong, nonatomic) NSMutableArray *mdLabels;
+@property (strong, nonatomic) NSMutableArray *watchers;
 
 @property (readwrite, nonatomic, strong) NSNumber *page, *pageSize, *totalPage, *totalRow;
 @property (assign, nonatomic) BOOL canLoadMore, willLoadMore, isLoading, isTopicLoading, isTopicEditLoading;
@@ -40,6 +42,8 @@
 + (ProjectTopic *)feedbackTopic;
 + (ProjectTopic *)topicWithPro:(Project *)pro;
 + (ProjectTopic *)topicWithId:(NSNumber *)topicId;
+
+- (User *)hasWatcher:(User *)watcher;
 
 - (NSString *)toTopicPath;
 - (NSDictionary *)toEditParams;
@@ -55,10 +59,11 @@
 - (void)configWithComments:(ProjectTopics *)comments;
 
 - (NSString *)toDoCommentPath;
-- (NSDictionary *)toDoCommentParams;
-- (void)configWithComment:(ProjectTopic *)comment;
+- (void)configWithComment:(ProjectTopic *)comment andAnswer:(ProjectTopic *)answer;
 
 - (NSString *)toDeletePath;
 
 - (BOOL)canEdit;
+- (NSInteger)commentsDisplayNum;
+- (void)change_is_up_voted;
 @end

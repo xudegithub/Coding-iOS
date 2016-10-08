@@ -23,7 +23,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor clearColor];
         if (!_userIconView) {
             _userIconView = [[UIImageView alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, ([UserCell cellHeight]-40)/2, 40, 40)];
             [_userIconView doCircleFrame];
@@ -32,7 +31,7 @@
         if (!_userNameLabel) {
             _userNameLabel = [[UITTTAttributedLabel alloc] initWithFrame:CGRectMake(66, ([UserCell cellHeight]-30)/2, kScreen_Width - 66 - 100, 30)];
             _userNameLabel.font = [UIFont systemFontOfSize:17];
-            _userNameLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _userNameLabel.textColor = kColor222;
             [self.contentView addSubview:_userNameLabel];
         }
         if (!_rightBtn) {

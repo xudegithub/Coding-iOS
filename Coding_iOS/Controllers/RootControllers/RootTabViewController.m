@@ -92,7 +92,6 @@
     UINavigationController *nav_message = [[BaseNavigationController alloc] initWithRootViewController:message];
     
     Me_RootViewController *me = [[Me_RootViewController alloc] init];
-    me.isRoot = YES;
     UINavigationController *nav_me = [[BaseNavigationController alloc] initWithRootViewController:me];
     
     [self setViewControllers:@[nav_project, nav_mytask, nav_tweet, nav_message, nav_me]];
@@ -102,12 +101,9 @@
 }
 
 - (void)customizeTabBarForController {
-
-    
-    UIImage *backgroundImage = [UIImage imageNamed:@"tabbar_background"];
+    UIImage *backgroundImage = [UIImage imageWithColor:kColorNavBG];
     NSArray *tabBarItemImages = @[@"project", @"task", @"tweet", @"privatemessage", @"me"];
     NSArray *tabBarItemTitles = @[@"项目", @"任务", @"冒泡", @"消息", @"我"];
-    
     NSInteger index = 0;
     for (RDVTabBarItem *item in [[self tabBar] items]) {
         item.titlePositionAdjustment = UIOffsetMake(0, 3);
@@ -120,6 +116,7 @@
         [item setTitle:[tabBarItemTitles objectAtIndex:index]];
         index++;
     }
+    [self.tabBar addLineUp:YES andDown:NO andColor:kColorCCC];
 }
 
 #pragma mark RDVTabBarControllerDelegate

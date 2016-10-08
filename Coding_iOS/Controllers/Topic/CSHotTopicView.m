@@ -52,11 +52,6 @@
         [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self);
         }];
-//        {
-//            UIEdgeInsets insets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(self.rdv_tabBarController.tabBar.frame), 0);
-//            tableView.contentInset = insets;
-//            tableView.scrollIndicatorInsets = insets;
-//        }
         tableView;
     });
     
@@ -169,39 +164,6 @@
     [self.parentVC.navigationController pushViewController:vc animated:YES];
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    if (_adlist.count == 0) {
-//        return 0;
-//    }
-//    return _adHeight;
-//}
-
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//    if (_adlist.count == 0) {
-//        return nil;
-//    }
-//    
-//    if (!_adView) {
-//        
-//        __weak CSHotTopicView *wself = self;
-//        _adView = [CodingBannersView new];
-//        _adView.tapActionBlock = ^(CodingBanner *tapedBanner) {
-//            
-//            CSTopicDetailVC *vc = [[CSTopicDetailVC alloc] init];
-//            vc.topicID = [tapedBanner.id intValue];
-//            
-//            [wself.parentVC.navigationController pushViewController:vc animated:YES];
-//        };
-//        _adView.backgroundColor = [UIColor whiteColor];
-//
-//    }
-//    
-//    _adView.curBannerList = self.adlist;
-//    
-//    return _adView;
-//}
-//
-
 
 @end
 
@@ -229,20 +191,18 @@ static CGFloat const kHotTopicCellPaddingRight = 15;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor clearColor];
-        
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, 15, kScreen_Width - kPaddingLeftWidth - kHotTopicCellPaddingRight, 12)];
         _nameLabel.font = [UIFont boldSystemFontOfSize:15];
         _nameLabel.backgroundColor = [UIColor clearColor];
-        _nameLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+        _nameLabel.textColor = kColor222;
         _nameLabel.textAlignment = NSTextAlignmentLeft;
         [self.contentView addSubview:_nameLabel];
         
         self.contentLabel = [[UITTTAttributedLabel alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, _nameLabel.bottom + 15, kScreen_Width - kPaddingLeftWidth - 30, 30)];
         self.contentLabel.font = [UIFont systemFontOfSize:14];
-        self.contentLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+        self.contentLabel.textColor = kColor222;
         self.contentLabel.numberOfLines = 0;
         
         self.contentLabel.linkAttributes = kLinkAttributes;
@@ -254,7 +214,7 @@ static CGFloat const kHotTopicCellPaddingRight = 15;
         _userCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, 75, kScreen_Width - kPaddingLeftWidth - kHotTopicCellPaddingRight, 12)];
         _userCountLabel.font = [UIFont systemFontOfSize:12];
         _userCountLabel.backgroundColor = [UIColor clearColor];
-        _userCountLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+        _userCountLabel.textColor = kColor999;
         _userCountLabel.textAlignment = NSTextAlignmentLeft;
         [self.contentView addSubview:_userCountLabel];
         
@@ -285,7 +245,7 @@ static CGFloat const kHotTopicCellPaddingRight = 15;
     [self.contentLabel setLongString:contentStr withFitWidth:self.contentLabel.width maxHeight:34];
     self.contentLabel.centerY = self.height / 2;
     for (HtmlMediaItem *item in tweet.htmlMedia.mediaItems) {
-        if (item.displayStr.length > 0 && !(item.type == HtmlMediaItemType_Code ||item.type == HtmlMediaItemType_EmotionEmoji)) {
+        if (item.displayStr.length > 0 && item.href.length > 0) {
             [self.contentLabel addLinkToTransitInformation:[NSDictionary dictionaryWithObject:item forKey:@"value"] withRange:item.range];
         }
     }
@@ -331,11 +291,9 @@ static CGFloat const kHotTopicCellPaddingRight = 15;
     if (self) {
         // Initialization code
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor clearColor];
-        
         self.textLabel.frame = CGRectMake(kPaddingLeftWidth, 12, kScreen_Width - 100, 12);
         self.textLabel.font = [UIFont systemFontOfSize:13];
-        self.textLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+        self.textLabel.textColor = kColor222;
         self.textLabel.text = @"热门话题榜单";
         self.textLabel.backgroundColor = [UIColor clearColor];
     }
@@ -362,8 +320,6 @@ static CGFloat const kHotTopicCellPaddingRight = 15;
     if (self) {
         // Initialization code
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor clearColor];
-        
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
         layout.minimumLineSpacing = 0;
         layout.itemSize = CGSizeMake(kScreen_Width, 80);

@@ -47,7 +47,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor clearColor];
         if (!_userIconView) {
             _userIconView = [[UITapImageView alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, kProjectActivityListCell_UpDownPading, kProjectActivityListCell_IconHeight, kProjectActivityListCell_IconHeight)];
             [_userIconView doCircleFrame];
@@ -70,7 +69,7 @@
         if (!_actionLabel) {
             _actionLabel = [[UITTTAttributedLabel alloc] initWithFrame:CGRectMake(kProjectActivityListCell_LeftPading, kProjectActivityListCell_UpDownPading, kProjectActivityListCell_ContentWidth, 20)];
             _actionLabel.backgroundColor = [UIColor clearColor];
-            _actionLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _actionLabel.textColor = kColor222;
             _actionLabel.font = kProjectActivityListCell_ActionFont;
             _actionLabel.linkAttributes = kLinkAttributes;
             _actionLabel.activeLinkAttributes = kLinkAttributesActive;
@@ -91,7 +90,7 @@
             _timeLabel = [[UITTTAttributedLabel alloc] initWithFrame:CGRectMake(kProjectActivityListCell_LeftPading, 0, kProjectActivityListCell_ContentWidth, kProjectActivityListCell_TimeHeight)];
             _timeLabel.backgroundColor = [UIColor clearColor];
             _timeLabel.font = kProjectActivityListCell_TimeFont;
-            _timeLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _timeLabel.textColor = kColor999;
             [self.contentView addSubview:_timeLabel];
         }
     }
@@ -135,7 +134,7 @@
 
     [_actionLabel setLongString:_proAct.actionStr withFitWidth:kProjectActivityListCell_ContentWidth maxHeight:kProjectActivityListCell_MaxActionHeight];
     for (HtmlMediaItem *item in _proAct.actionMediaItems) {
-        if (item.displayStr.length > 0) {
+        if (item.displayStr.length > 0 && item.href.length > 0) {
             [self.actionLabel addLinkToTransitInformation:[NSDictionary dictionaryWithObject:item forKey:@"value"] withRange:item.range];
         }
     }

@@ -23,7 +23,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor clearColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         NSInteger itemsNum = 0, itemsNumInLine = 1;
@@ -100,7 +99,7 @@
     UILabel *titleL = [[UILabel alloc] init];
     titleL.textAlignment = NSTextAlignmentCenter;
     titleL.font = [UIFont systemFontOfSize:13];
-    titleL.textColor = [UIColor colorWithHexString:@"0x222222"];
+    titleL.textColor = kColor222;
     titleL.text = titleStr;
     
 //    CGFloat pading_IconToTitle = kScaleFrom_iPhone5_Desgin(10);

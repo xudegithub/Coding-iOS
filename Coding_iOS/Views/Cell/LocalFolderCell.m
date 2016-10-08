@@ -19,7 +19,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        self.backgroundColor = [UIColor clearColor];
         // Initialization code
         CGFloat icon_width = 45.0;
         if (!_iconView) {
@@ -28,7 +27,7 @@
         }
         if (!_nameLabel) {
             _nameLabel = [UILabel new];
-            _nameLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _nameLabel.textColor = kColor222;
             _nameLabel.font = [UIFont systemFontOfSize:16];
             [self.contentView addSubview:_nameLabel];
         }
@@ -44,7 +43,7 @@
             make.height.mas_equalTo(30);
         }];
         NSMutableArray *rightUtilityButtons = [NSMutableArray new];
-        [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithHexString:@"0xff5846"] icon:[UIImage imageNamed:@"icon_file_cell_delete"]];
+        [rightUtilityButtons sw_addUtilityButtonWithColor:kColorBrandRed icon:[UIImage imageNamed:@"icon_file_cell_delete"]];
         [self setRightUtilityButtons:rightUtilityButtons WithButtonWidth:[LocalFolderCell cellHeight]];
     }
     return self;

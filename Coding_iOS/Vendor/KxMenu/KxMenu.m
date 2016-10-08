@@ -537,19 +537,8 @@ typedef enum {
         }
         
         if (itemNum < _menuItems.count - 1) {
-            
-//            UIImageView *gradientView = [[UIImageView alloc] initWithImage:gradientLine];
-//            gradientView.frame = (CGRect){kMarginX * 2, maxItemHeight + 1, gradientLine.size};
-//            gradientView.contentMode = UIViewContentModeLeft;
-            
-            UIView *lineView=[UIView new];
-            lineView.backgroundColor=[UIColor colorWithHexString:@"0xffffff" andAlpha:0.2];
-            lineView.frame=CGRectMake(0, maxItemHeight + 0.3, 160, 0.5);
-            [itemView addSubview:lineView];
-            
             itemY += 2;
         }
-        
         itemY += maxItemHeight;
         ++itemNum;
     }    
@@ -787,7 +776,7 @@ typedef enum {
     CGContextDrawLinearGradient(context, gradient, start, end, 0);
     
     CGGradientRelease(gradient);
-    self.alpha=0.92;
+    self.alpha = 0.96;
 }
 
 @end

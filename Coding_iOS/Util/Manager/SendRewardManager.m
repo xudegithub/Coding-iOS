@@ -94,7 +94,7 @@
         [_bgView addSubview:_contentView];
         
         //属性设置
-        _contentView.backgroundColor = [UIColor colorWithHexString:@"0xF8F8F8"];
+        _contentView.backgroundColor = kColorTableSectionBg;
         _contentView.layer.masksToBounds = YES;
         _contentView.layer.cornerRadius = 6;
         [_closeBtn setImage:[UIImage imageNamed:@"button_close"] forState:UIControlStateNormal];
@@ -102,18 +102,18 @@
         _userImgV.layer.masksToBounds = YES;
         _userImgV.layer.cornerRadius = userIconWidth/2;
         _titleL.font = [UIFont systemFontOfSize:18];
-        _titleL.textColor = [UIColor colorWithHexString:@"0x222222"];
+        _titleL.textColor = kColor222;
         _titleL.textAlignment = NSTextAlignmentCenter;
         _titleL.attributedText = [self p_titleStr];
         _passwordF.font = [UIFont systemFontOfSize:15];
-        _passwordF.textColor = [UIColor colorWithHexString:@"0x222222"];
+        _passwordF.textColor = kColor222;
         _passwordF.secureTextEntry = YES;
         _passwordF.textAlignment = NSTextAlignmentCenter;
-        [_passwordF doBorderWidth:1.0 color:[UIColor colorWithHexString:@"0xCCCCCC"] cornerRadius:2.0];
+        [_passwordF doBorderWidth:1.0 color:kColorCCC cornerRadius:2.0];
         _passwordF.placeholder = @" 请输入密码";
         _passwordF.alpha = 0;
         _bottomL.font = [UIFont systemFontOfSize:12];
-        _bottomL.textColor = [UIColor colorWithHexString:@"0x999999"];
+        _bottomL.textColor = kColor999;
         _bottomL.textAlignment = NSTextAlignmentCenter;
         _tipBgView.backgroundColor = [UIColor colorWithHexString:@"0xF2DEDE"];
         _tipBgView.layer.masksToBounds = YES;

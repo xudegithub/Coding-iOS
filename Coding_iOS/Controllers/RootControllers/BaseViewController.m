@@ -18,7 +18,7 @@
 #import "EditTaskViewController.h"
 #import "ProjectViewController.h"
 #import "NProjectViewController.h"
-#import "UserTweetsViewController.h"
+#import "UserOrProjectTweetsViewController.h"
 #import "Coding_NetAPIManager.h"
 #import "AppDelegate.h"
 #import "WebViewController.h"
@@ -64,7 +64,7 @@ typedef NS_ENUM(NSInteger, AnalyseMethodType) {
     [super viewWillAppear:animated];
     [MobClick beginLogPageView:[NSString stringWithUTF8String:object_getClassName(self)]];
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 
     if (self.interfaceOrientation != UIInterfaceOrientationPortrait
         && !([self supportedInterfaceOrientations] & UIInterfaceOrientationMaskLandscapeLeft)) {
@@ -80,7 +80,8 @@ typedef NS_ENUM(NSInteger, AnalyseMethodType) {
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    self.view.backgroundColor = kColorTableBG;
+//    self.view.backgroundColor = kColorTableBG;
+    self.view.backgroundColor = kColorTableSectionBg;
     
     if (self.interfaceOrientation != UIInterfaceOrientationPortrait
         && !([self supportedInterfaceOrientations] & UIInterfaceOrientationMaskLandscapeLeft)) {
@@ -322,7 +323,7 @@ typedef NS_ENUM(NSInteger, AnalyseMethodType) {
             analyseVC = vc;
         }else if ((matchedCaptures = [linkStr captureComponentsMatchedByRegex:userTweetRegexStr]).count > 0){
             //某人的冒泡
-            UserTweetsViewController *vc = [[UserTweetsViewController alloc] init];
+            UserOrProjectTweetsViewController *vc = [[UserOrProjectTweetsViewController alloc] init];
             NSString *user_global_key = matchedCaptures[1];
             vc.curTweets = [Tweets tweetsWithUser:[User userWithGlobalKey:user_global_key]];
             analyseVC = vc;

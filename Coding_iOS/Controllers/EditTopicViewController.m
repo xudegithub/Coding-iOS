@@ -49,20 +49,20 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    self.view.backgroundColor = kColorTableBG;
     if (!_segmentedControl) {
         _segmentedControl = ({
             UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"编辑", @"预览"]];
             [segmentedControl setWidth:80 forSegmentAtIndex:0];
             [segmentedControl setWidth:80 forSegmentAtIndex:1];
             [segmentedControl setTitleTextAttributes:@{
-                                                       NSFontAttributeName: [UIFont boldSystemFontOfSize:16],
-                                                       NSForegroundColorAttributeName: [UIColor colorWithHexString:@"0x28303b"]
+                                                       NSFontAttributeName: [UIFont systemFontOfSize:16],
+                                                       NSForegroundColorAttributeName: [UIColor whiteColor]
                                                        }
                                             forState:UIControlStateSelected];
             [segmentedControl setTitleTextAttributes:@{
-                                                       NSFontAttributeName: [UIFont boldSystemFontOfSize:16],
-                                                       NSForegroundColorAttributeName: [UIColor whiteColor]
+                                                       NSFontAttributeName: [UIFont systemFontOfSize:16],
+                                                       NSForegroundColorAttributeName: kColorNavTitle
                                                        } forState:UIControlStateNormal];
             [segmentedControl addTarget:self action:@selector(segmentedControlSelected:) forControlEvents:UIControlEventValueChanged];
             segmentedControl;
@@ -157,7 +157,7 @@
         _editView = [[UIView alloc] initWithFrame:self.view.bounds];
         
         _inputTitleView = [[UITextField alloc] initWithFrame:CGRectZero];
-        _inputTitleView.textColor = [UIColor colorWithHexString:@"0x222222"];
+        _inputTitleView.textColor = kColor222;
         _inputTitleView.font = [UIFont systemFontOfSize:18];
         _inputTitleView.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(self.type == TopicEditTypeFeedBack ? @"反馈标题" : @"讨论标题") attributes:@{NSForegroundColorAttributeName : [UIColor lightGrayColor]}];
         [_editView addSubview:_inputTitleView];
@@ -168,7 +168,7 @@
         
         _inputContentView = [[EaseMarkdownTextView alloc] initWithFrame:CGRectZero];
         _inputContentView.curProject = self.curProTopic.project;
-        _inputContentView.textColor = [UIColor colorWithHexString:@"0x222222"];
+        _inputContentView.textColor = kColor222;
         _inputContentView.placeholder = self.type == TopicEditTypeFeedBack ? @"反馈内容" : @"讨论内容";
         
         _inputContentView.backgroundColor = [UIColor clearColor];

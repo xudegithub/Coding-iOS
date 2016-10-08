@@ -20,8 +20,8 @@
 
 -(void)defaultStyle{
     [self bootstrapStyle];
-    [self setTitleColor:[UIColor colorWithHexString:@"0x3bbd79"] forState:UIControlStateNormal];
-    [self setTitleColor:[UIColor colorWithHexString:@"0x3bbd79"] forState:UIControlStateHighlighted];
+    [self setTitleColor:kColorBrandGreen forState:UIControlStateNormal];
+    [self setTitleColor:kColorBrandGreen forState:UIControlStateHighlighted];
     self.backgroundColor = [UIColor whiteColor];
     self.layer.borderColor = [[UIColor colorWithRed:204/255.0 green:204/255.0 blue:204/255.0 alpha:1] CGColor];
     [self setBackgroundImage:[self buttonImageFromColor:[UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1]] forState:UIControlStateHighlighted];
@@ -29,15 +29,15 @@
 
 -(void)primaryStyle{
     [self bootstrapStyle];
-    self.backgroundColor = [UIColor colorWithHexString:@"0x3bbd79"];
-    self.layer.borderColor = [[UIColor colorWithHexString:@"0x3bbd79"] CGColor];
+    self.backgroundColor = kColorBrandGreen;
+    self.layer.borderColor = [kColorBrandGreen CGColor];
     [self setBackgroundImage:[self buttonImageFromColor:[UIColor colorWithHexString:@"0x28a464"]] forState:UIControlStateHighlighted];
 }
 
 -(void)successStyle{
     [self bootstrapStyle];
     self.layer.borderColor = [[UIColor clearColor] CGColor];
-    [self setBackgroundImage:[self buttonImageFromColor:[UIColor colorWithHexString:@"0x3bbc79"]] forState:UIControlStateNormal];
+    [self setBackgroundImage:[self buttonImageFromColor:kColorBrandGreen] forState:UIControlStateNormal];
     [self setBackgroundImage:[self buttonImageFromColor:[UIColor colorWithHexString:@"0x3bbc79" andAlpha:0.5]] forState:UIControlStateDisabled];
     [self setBackgroundImage:[self buttonImageFromColor:[UIColor colorWithHexString:@"0x32a067"]] forState:UIControlStateHighlighted];
     [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

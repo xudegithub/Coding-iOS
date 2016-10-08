@@ -32,7 +32,7 @@
     return btn;
 }
 + (UIButton *)buttonWithTitle_ForNav:(NSString *)title{
-    return [UIButton buttonWithTitle:title titleColor:[UIColor colorWithHexString:@"0x3bbd79"]];
+    return [UIButton buttonWithTitle:title titleColor:kColorBrandGreen];
 }
 + (UIButton *)buttonWithUserStyle{
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -51,8 +51,8 @@
     self.layer.masksToBounds = YES;
     self.layer.cornerRadius = 2.0;
     self.titleLabel.font = [UIFont systemFontOfSize:17];
-//    [self setTitleColor:[UIColor colorWithHexString:@"0x222222"] forState:UIControlStateNormal];
-    [self setTitleColor:[UIColor colorWithHexString:@"0x3bbd79"] forState:UIControlStateNormal];
+//    [self setTitleColor:kColor222 forState:UIControlStateNormal];
+    [self setTitleColor:kColorBrandGreen forState:UIControlStateNormal];
     [self setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor]] forState:UIControlStateNormal];
     [self setBackgroundImage:[UIImage imageWithColor:[UIColor lightGrayColor]] forState:UIControlStateHighlighted];
 }
@@ -129,7 +129,7 @@
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = frame;
     button.titleLabel.font = [UIFont systemFontOfSize:12];
-    [button setTitleColor:[UIColor colorWithHexString:@"0x999999"] forState:UIControlStateNormal];
+    [button setTitleColor:kColor999 forState:UIControlStateNormal];
     if (alignmentLeft) {
         button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         button.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, -5);

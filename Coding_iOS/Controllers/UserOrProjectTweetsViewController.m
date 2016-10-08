@@ -8,19 +8,19 @@
 
 #define kCommentIndexNotFound -1
 
-#import "UserTweetsViewController.h"
+#import "UserOrProjectTweetsViewController.h"
 #import "TweetCell.h"
-#import "ODRefreshControl.h"
 #import "Coding_NetAPIManager.h"
 #import "UserInfoViewController.h"
 #import "LikersViewController.h"
 #import "TweetDetailViewController.h"
 #import "SVPullToRefresh.h"
 #import "WebViewController.h"
+#import "ProjectTweetSendViewController.h"
 
-@interface UserTweetsViewController ()
-@property (nonatomic, strong) UITableView *myTableView;
-@property (nonatomic, strong) ODRefreshControl *refreshControl;
+@interface UserOrProjectTweetsViewController ()
+@property (nonatomic, strong, readwrite) UITableView *myTableView;
+@property (nonatomic, strong, readwrite) ODRefreshControl *refreshControl;
 
 //评论
 @property (nonatomic, strong) UIMessageInputView *myMsgInputView;
@@ -34,7 +34,7 @@
 @property (nonatomic, assign) NSInteger deleteTweetsIndex;
 @end
 
-@implementation UserTweetsViewController
+@implementation UserOrProjectTweetsViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -49,7 +49,14 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = _curTweets.curUser.name;
+    if (_curTweets.tweetType == TweetTypeUserSingle) {
+        self.title = _curTweets.curUser.name;
+    }else if (_curTweets.tweetType == TweetTypeProject){
+        self.title = _curTweets.curPro.name ?: @"项目内冒泡";
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"addBtn_Nav"] style:UIBarButtonItemStylePlain target:self action:@selector(addBtnClicked)];
+    }else{
+        self.title = @"冒泡列表";
+    }
     
     //    添加myTableView
     _myTableView = ({
@@ -100,6 +107,17 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)addBtnClicked{
+    ProjectTweetSendViewController *vc = [ProjectTweetSendViewController new];
+    vc.curPro = _curTweets.curPro;
+    @weakify(self);
+    vc.sentBlock = ^(Tweet *tweet){
+        @strongify(self);
+        [self refresh];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark UIMessageInputViewDelegate
@@ -174,12 +192,12 @@
     if (_curTweets.list.count <= 0) {
         [self.view beginLoading];
     }
-    __weak typeof(self) weakSelf = self;
-    if (_curTweets.curUser.name.length <= 0) {
+    if (_curTweets.tweetType == TweetTypeUserSingle && _curTweets.curUser.name.length <= 0) {
         [self refreshCurUser];
         return;
     }
     
+    __weak typeof(self) weakSelf = self;
     [[Coding_NetAPIManager sharedManager] request_Tweets_WithObj:_curTweets andBlock:^(id data, NSError *error) {
         [weakSelf.refreshControl endRefreshing];
         [weakSelf.view endLoading];
@@ -215,11 +233,7 @@
 
 #pragma mark TableM
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (_curTweets && _curTweets.list) {
-        return [_curTweets.list count];
-    }else{
-        return 0;
-    }
+    return [_curTweets.list count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

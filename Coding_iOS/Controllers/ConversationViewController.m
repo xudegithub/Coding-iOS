@@ -48,7 +48,7 @@ static const NSTimeInterval kPollTimeInterval = 3.0;
     //    添加myTableView
     _myTableView = ({
         UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-        tableView.backgroundColor = [UIColor clearColor];
+        tableView.backgroundColor = kColorTableBG;
         tableView.dataSource = self;
         tableView.delegate = self;
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -253,7 +253,7 @@ static const NSTimeInterval kPollTimeInterval = 3.0;
     PrivateMessage *curMsg = [_myPriMsgs.dataList objectAtIndex:curIndex];
     if (curMsg.hasMedia) {
         cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier_MessageMedia forIndexPath:indexPath];
-    }else if (curMsg.file || curMsg.voiceMedia) {
+    }else if ([curMsg isVoice]) {
         cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier_MessageVoice forIndexPath:indexPath];
     }else{
         cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier_Message forIndexPath:indexPath];
@@ -296,7 +296,7 @@ static const NSTimeInterval kPollTimeInterval = 3.0;
             [menuItemArray addObject:@"拷贝文字"];
         }
     }else{
-        if (!(curMsg.voiceMedia || curMsg.file)) {
+        if (!([curMsg isVoice])) {
             [menuItemArray addObject:@"拷贝"];
         }
     }

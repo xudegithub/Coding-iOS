@@ -139,7 +139,7 @@
 
 - (void)configRightBarButtonItemWithViewType:(ProjectViewType)viewType{
     UIBarButtonItem *navRightBtn = nil;
-    if ((viewType == ProjectViewTypeMembers && [[Login curLoginUser].global_key isEqualToString:_myProject.owner_user_name])
+    if ((viewType == ProjectViewTypeMembers && _myProject.current_user_role_id.integerValue >= 90)
         || viewType == ProjectViewTypeTasks
         || viewType == ProjectViewTypeTopics
         || viewType == ProjectViewTypeFiles) {
@@ -326,7 +326,7 @@
         vc.myProject = _myProject;
         vc.myCodeTree = nextCodeTree;
         [self.navigationController pushViewController:vc animated:YES];
-    }else if ([@[@"file", @"image", @"sym_link"] containsObject:codeTreeFile.mode]){//文件
+    }else if ([@[@"file", @"image", @"sym_link", @"executable"] containsObject:codeTreeFile.mode]){//文件
         CodeFile *nextCodeFile = [CodeFile codeFileWithRef:ref andPath:codeTreeFile.path];
         CodeViewController *vc = [CodeViewController codeVCWithProject:_myProject andCodeFile:nextCodeFile];
         [self.navigationController pushViewController:vc animated:YES];
@@ -542,7 +542,7 @@
             __weak typeof(self) weakSelf = self;
             AddUserViewController *vc = [[AddUserViewController alloc] init];
             vc.curProject = self.myProject;
-            vc.type = AddUserTypeProject;
+            vc.type = AddUserTypeProjectRoot;
             if (_proMemberVC && _proMemberVC.myMemberArray) {
                 [vc configAddedArrayWithMembers:_proMemberVC.myMemberArray];
             }

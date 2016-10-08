@@ -87,7 +87,7 @@
             _countryCodeL = ({
                 UILabel *label = [UILabel new];
                 label.font = [UIFont systemFontOfSize:17];
-                label.textColor = [UIColor colorWithHexString:@"0x3bbd79"];
+                label.textColor = kColorBrandGreen;
                 [self.contentView addSubview:label];
                 [label mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.left.equalTo(self.contentView).offset(kPaddingLeftWidth);
@@ -97,7 +97,7 @@
             });
             UIView *lineV = ({
                 UIView *view = [UIView new];
-                view.backgroundColor = [UIColor colorWithHexString:@"0xCCCCCC"];
+                view.backgroundColor = kColorCCC;
                 [self.contentView addSubview:view];
                 [view mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.left.equalTo(self.countryCodeL.mas_right).offset(8);
@@ -198,7 +198,7 @@
     
     self.backgroundColor = _isForLoginVC? [UIColor clearColor]: [UIColor whiteColor];
     self.textField.clearButtonMode = _isForLoginVC? UITextFieldViewModeNever: UITextFieldViewModeWhileEditing;
-    self.textField.textColor = _isForLoginVC? [UIColor whiteColor]: [UIColor colorWithHexString:@"0x222222"];
+    self.textField.textColor = _isForLoginVC? [UIColor whiteColor]: kColor222;
     self.lineView.hidden = !_isForLoginVC;
     self.clearBtn.hidden = YES;
 
@@ -246,7 +246,7 @@
 
 #pragma mark TextField
 - (void)editDidBegin:(id)sender {
-    self.lineView.backgroundColor = [UIColor colorWithHexString:@"0xffffff"];
+    self.lineView.backgroundColor = [UIColor whiteColor];
     self.clearBtn.hidden = _isForLoginVC? self.textField.text.length <= 0: YES;
     
     if (self.editDidBeginBlock) {

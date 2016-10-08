@@ -30,7 +30,7 @@
 #import "PRListViewController.h"
 #import "MRListViewController.h"
 #import "EaseGitButtonsView.h"
-
+#import "UserOrProjectTweetsViewController.h"
 #import "FunctionTipsManager.h"
 
 @interface NProjectViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -101,11 +101,18 @@
     [[Coding_NetAPIManager sharedManager] request_ProjectDetail_WithObj:_myProject andBlock:^(id data, NSError *error) {
         if (data) {
             weakSelf.myProject = data;
+            weakSelf.navigationItem.rightBarButtonItem = weakSelf.myProject.is_public.boolValue? nil: [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"tweetsBtn_Nav"] style:UIBarButtonItemStylePlain target:self action:@selector(tweetsBtnClicked)];
             [self refreshGitButtonsView];
             [weakSelf.myTableView reloadData];
         }
         [weakSelf.refreshControl endRefreshing];
     }];
+}
+
+- (void)tweetsBtnClicked{
+    UserOrProjectTweetsViewController *vc = [UserOrProjectTweetsViewController new];
+    vc.curTweets = [Tweets tweetsWithProject:self.myProject];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark Table M

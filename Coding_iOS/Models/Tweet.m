@@ -255,6 +255,9 @@ static Tweet *_tweetForSend = nil;
 
 - (NSDictionary *)toDoTweetParams{
     NSMutableString *contentStr = [[NSMutableString alloc] initWithString:_tweetContent? _tweetContent: @""];
+    if (_tweetImages.count > 0) {
+        [contentStr appendString:@"\n"];
+    }
     for (TweetImage *imageItem in _tweetImages) {
         if (imageItem.imageStr && imageItem.imageStr.length > 0) {
             [contentStr appendString:imageItem.imageStr];
@@ -332,6 +335,9 @@ static Tweet *_tweetForSend = nil;
     }];
 }
 
+- (BOOL)isProjectTweet{
+    return self.project_id != nil;
+}
 - (void)addASelectedAssetURL:(NSURL *)assetURL{
     if (!_selectedAssetURLs) {
         _selectedAssetURLs = [NSMutableArray new];

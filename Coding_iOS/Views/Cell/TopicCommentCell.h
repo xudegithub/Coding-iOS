@@ -15,7 +15,8 @@
 @interface TopicCommentCell : UITableViewCell
 @property (strong, nonatomic) ProjectTopic *toComment;
 @property (strong, nonatomic) UITTTAttributedLabel *contentLabel;
-
+@property (assign, nonatomic) BOOL isAnswer;
+@property (strong, nonatomic) NSNumber *projectId;
 + (CGFloat)cellHeightWithObj:(id)obj;
 
 @end

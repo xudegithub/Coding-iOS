@@ -20,7 +20,6 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
         // Initialization code
         if (!_userIconView) {
             _userIconView = [[UIImageView alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, ([ConversationCell cellHeight]-48)/2, 48, 48)];
@@ -30,14 +29,14 @@
         if (!_name) {
             _name = [[UILabel alloc] initWithFrame:CGRectMake(75, 8, 150, 25)];
             _name.font = [UIFont systemFontOfSize:17];
-            _name.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _name.textColor = kColor222;
             _name.backgroundColor = [UIColor clearColor];
             [self.contentView addSubview:_name];
         }
         if (!_time) {
             _time = [[UILabel alloc] initWithFrame:CGRectMake(kScreen_Width - 100-kPaddingLeftWidth, 8, 100, 25)];
             _time.font = [UIFont systemFontOfSize:12];
-            _time.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _time.textColor = kColor999;
             _time.textAlignment = NSTextAlignmentRight;
             _time.backgroundColor = [UIColor clearColor];
             [self.contentView addSubview:_time];
@@ -46,7 +45,7 @@
             _msg = [[UILabel alloc] initWithFrame:CGRectMake(75, 30, kScreen_Width-75-30 -kPaddingLeftWidth, 25)];
             _msg.font = [UIFont systemFontOfSize:15];
             _msg.backgroundColor = [UIColor clearColor];
-            _msg.textColor = [UIColor colorWithHexString:@"0X999999"];
+            _msg.textColor = kColor999;
             [self.contentView addSubview:_msg];
         }
     }
@@ -63,15 +62,15 @@
     
     _name.text = _curPriMsg.friend.name;
     _time.text = [_curPriMsg.created_at stringDisplay_MMdd];
-    _msg.textColor = [UIColor colorWithHexString:@"0X999999"];
+    _msg.textColor = kColor999;
     NSMutableString *textMsg = [[NSMutableString alloc] initWithString:_curPriMsg.content];
     if (_curPriMsg.hasMedia) {
         [textMsg appendString:@"[图片]"];
     }
-    if (_curPriMsg.file || _curPriMsg.voiceMedia) {
+    if ([_curPriMsg isVoice]) {
         [textMsg setString:@"[语音]"];
         if (_curPriMsg.played.intValue == 0) {
-            _msg.textColor = [UIColor colorWithHexString:@"0x3bbd79"];
+            _msg.textColor = kColorBrandGreen;
         }
     }
     _msg.text = textMsg;
